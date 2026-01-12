@@ -14,6 +14,7 @@
             const int THREE_MATCHES = 3;
             const int CENTER_LINE = 1;
             const int COST_PER_SPIN = 1;
+            const int NUMBER_OF_SYMBOLS = 4;
 
             int betMoney = 0;
             int totalWinAmount = 0;
@@ -99,11 +100,11 @@
                 int randomNumber; 
 
                 Console.WriteLine();
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < NUMBER_OF_ROWS; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
                     {
-                        randomNumber = rng.Next(0, 4);
+                        randomNumber = rng.Next(0, NUMBER_OF_SYMBOLS);
                         slotMachineArray[i, j] = symbolsList[randomNumber];
                         Console.Write($"{slotMachineArray[i, j]}  ");
                     }
@@ -124,7 +125,7 @@
                     int matches = 0;
                     char horizontalMatcher = slotMachineArray[i, 0];
 
-                    for (int j = 0; j < 3; j++)
+                    for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
                     {
                         if (horizontalMatcher == slotMachineArray[i, j])
                         {
@@ -162,12 +163,12 @@
 
                 //vertical line match
                 int verticalLineMatches = 0;
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
                 {
                     int matches = 0;
                     char verticalMatcher = slotMachineArray[0, j];
 
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < NUMBER_OF_ROWS; i++)
                     {
                         if (verticalMatcher == slotMachineArray[i, j])
                         {
