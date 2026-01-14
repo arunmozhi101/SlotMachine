@@ -11,10 +11,8 @@
             const int PERCENT = 4;
             const int POUND = 8;
             const int DOLLAR = 10;
-            const int THREE_MATCHES = 3;
             const int CENTER_LINE = 1;
             const int COST_PER_SPIN = 1;
-            const int NUMBER_OF_SYMBOLS = 4;
 
             int betMoney = 0;
             int totalWinAmount = 0;
@@ -90,25 +88,22 @@
             //Print player wins.
             int numberOfSpins = betMoney * COST_PER_SPIN;
             char[] symbolsList = { '@', '£', '$', '%' };
-            
+            char[,] slotMachineArray = new char[NUMBER_OF_ROWS, NUMBER_OF_COLUMNS];
+
             for (int spin = 1; spin <= numberOfSpins; spin++)
             {
                 int spinWinAmount = 0;
-                Console.Write($"You have {numberOfSpins} spins left.");
-                //Building the SlotMachine array.
-                char[,] slotMachineArray = new char[3, 3];
-                int randomNumber; 
-
+                int randomNumber;
+                
                 Console.WriteLine();
                 for (int i = 0; i < NUMBER_OF_ROWS; i++)
                 {
                     for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
                     {
-                        randomNumber = rng.Next(0, NUMBER_OF_SYMBOLS);
+                        randomNumber = rng.Next(0, symbolsList.Length);
                         slotMachineArray[i, j] = symbolsList[randomNumber];
                         Console.Write($"{slotMachineArray[i, j]}  ");
                     }
-
                     Console.WriteLine();
                 }
 
@@ -120,7 +115,7 @@
                 int diagonalLineMatch = 0;
 
                 //horizontal line match
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < NUMBER_OF_ROWS; i++)
                 {
                     int matches = 0;
                     char horizontalMatcher = slotMachineArray[i, 0];
@@ -133,7 +128,7 @@
                         }
                     }
 
-                    if (matches == THREE_MATCHES)
+                    if (matches == NUMBER_OF_ROWS)
                     {
                         horizontalLineMatches++;
                         Console.WriteLine("Horizontal Line Match!");
@@ -176,8 +171,9 @@
                         }
                     }
 
-                    if (matches == THREE_MATCHES)
+                    if (matches == NUMBER_OF_COLUMNS)
                     {
+                        verticalLineMatches++;
                         Console.WriteLine("Vertical Line Match!");
                         // Identify the matcher for payout
                         switch (verticalMatcher)
@@ -199,11 +195,31 @@
                 } //vertical line match
 
                 //diagonal lines check
-                char diagonalMatcher1 = slotMachineArray[0, 0];
-                if (slotMachineArray[0, 0] == slotMachineArray[1, 1] && slotMachineArray[0, 0] == slotMachineArray[2, 2])
+                int forwardDiagonalMatches = 0;
+                char forwardDiagonalMatcher = slotMachineArray[0, 0];
+                int backwardDiagonalMatches = 0;
+                char backwardDiagonalMatcher = slotMachineArray[0, NUMBER_OF_COLUMNS - 1];
+                for (int i = 0; i < NUMBER_OF_ROWS; i++)
                 {
-                    Console.WriteLine($"Backward Diagonal Match!");
-                    switch (diagonalMatcher1)
+                    for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
+                    {
+                        if (i == j && forwardDiagonalMatcher ==  slotMachineArray[i, j])
+                        {
+                            forwardDiagonalMatches++;
+                        }
+
+                        if ( i == (NUMBER_OF_ROWS - (j + 1)) &&
+                             backwardDiagonalMatcher == slotMachineArray[i, j])
+                        {   
+                            backwardDiagonalMatches++;
+                        }
+                    }
+                }
+
+                if (forwardDiagonalMatches == NUMBER_OF_ROWS)
+                {
+                    Console.WriteLine($"Forward Diagonal Match!");
+                    switch (forwardDiagonalMatcher)
                     {
                         case '@':
                             spinWinAmount += AT;
@@ -219,12 +235,10 @@
                             break;
                     }
                 }
-
-                char diagonalMatcher2 = slotMachineArray[0, 2];
-                if (slotMachineArray[0, 2] == slotMachineArray[1, 2] && slotMachineArray[0, 2] == slotMachineArray[2, 0])
+                if (backwardDiagonalMatches == NUMBER_OF_ROWS)
                 {
-                    Console.WriteLine($"Forward Diagonal Match!");
-                    switch (diagonalMatcher2)
+                    Console.WriteLine($"Backward Diagonal Match!");
+                    switch (backwardDiagonalMatcher)
                     {
                         case '@':
                             spinWinAmount += AT;
@@ -259,6 +273,7 @@
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
+            //End of spin for loop
         }
     }
 }
