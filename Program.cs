@@ -4,91 +4,25 @@
     {
         static void Main(string[] args)
         {
-            const int NUMBER_OF_ROWS = 3;
-            const int NUMBER_OF_COLUMNS = 3;
-            const int JACKPOT = 100;
-            const int AT = 2;
-            const int PERCENT = 4;
-            const int POUND = 8;
-            const int DOLLAR = 10;
-            const int CENTER_LINE = 1;
-            const int COST_PER_SPIN = 1;
-
             int betMoney = 0;
             int totalWinAmount = 0;
 
             Random rng = new Random();
 
-            Console.WriteLine("Welcome to the Slot Machine Game!");
+            UI.WelcomeMessage();
 
             //Display rules
-            while (true)
-            {
-                Console.Write("Are you playing the game for the first time?(Y/N) - ");
-                string firstTime = Console.ReadLine().ToLower();
-                string rulesOfTheGame = $"""
-                                         You enter an amount of money to play. Each spin is ${COST_PER_SPIN}. 
-
-                                         This is the payout, for each horizontal, vertical and diagonal line,
-
-                                         @ @ @ - ${AT}
-                                         % % % - ${PERCENT}
-                                         £ £ £ - ${POUND}
-                                         $ $ $ = ${DOLLAR} 
-
-                                         If two lines of the same symbol match then single line payout is doubled.
-
-                                         Jackpot is if all lines have the same symbol,
-                                         For Jackpot it is ${JACKPOT}.
-
-                                         """;
-                if (firstTime == "y")
-                {
-                    Console.Write(rulesOfTheGame);
-                    break;
-                }
-                else if (firstTime == "n")
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Error: Incorrect input. Please enter Y or y for Yes and N or n for No.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadLine();
-                    Console.Clear();
-                }
-            }
+            UI.DisplayRules();
 
             //Bet Money
-            while (true)
-            {
-                Console.Write("How much money would you like to wager? $");
-                string unparsedMoneyInput = Console.ReadLine();
-
-                if (int.TryParse(unparsedMoneyInput, out betMoney))
-                {
-                    Console.WriteLine($"So you wanna bet ${betMoney}?");
-                    Console.WriteLine("Excellent!");
-                    Console.WriteLine("Let's play!");
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Error: Incorrect input for money. Please try again.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadLine();
-                    Console.Clear();
-                }
-            }
-
+            int betMoney = UI.GetBetMoney();
 
             //Print how many spins the user has and build the slot machine array
             //Create symbols list and randomize the array
             //Print player wins.
-            int numberOfSpins = betMoney * COST_PER_SPIN;
+            int numberOfSpins = betMoney * Constants.COST_PER_SPIN;
             char[] symbolsList = { '@', '£', '$', '%' };
-            char[,] slotMachineArray = new char[NUMBER_OF_ROWS, NUMBER_OF_COLUMNS];
+            char[,] slotMachineArray = new char[Constants.NUMBER_OF_ROWS, Constants.NUMBER_OF_COLUMNS];
 
             for (int spin = 1; spin <= numberOfSpins; spin++)
             {
@@ -96,9 +30,9 @@
                 int randomNumber;
                 
                 Console.WriteLine();
-                for (int i = 0; i < NUMBER_OF_ROWS; i++)
+                for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
                 {
-                    for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
+                    for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
                     {
                         randomNumber = rng.Next(0, symbolsList.Length);
                         slotMachineArray[i, j] = symbolsList[randomNumber];
@@ -115,12 +49,12 @@
                 int diagonalLineMatch = 0;
 
                 //horizontal line match
-                for (int i = 0; i < NUMBER_OF_ROWS; i++)
+                for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
                 {
                     int matches = 0;
                     char horizontalMatcher = slotMachineArray[i, 0];
 
-                    for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
+                    for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
                     {
                         if (horizontalMatcher == slotMachineArray[i, j])
                         {
@@ -128,11 +62,11 @@
                         }
                     }
 
-                    if (matches == NUMBER_OF_ROWS)
+                    if (matches == Constants.NUMBER_OF_ROWS)
                     {
                         horizontalLineMatches++;
                         Console.WriteLine("Horizontal Line Match!");
-                        if (i == CENTER_LINE)
+                        if (i == Constants.CENTER_LINE)
                         {
                             Console.WriteLine($"Center Line Match!");
                         }
@@ -141,16 +75,16 @@
                         switch (horizontalMatcher)
                         {
                             case '@':
-                                spinWinAmount += AT;
+                                spinWinAmount += Constants.AT;
                                 break;
                             case '%':
-                                spinWinAmount += PERCENT;
+                                spinWinAmount += Constants.PERCENT;
                                 break;
                             case '£':
-                                spinWinAmount += POUND;
+                                spinWinAmount += Constants.POUND;
                                 break;
                             case '$':
-                                spinWinAmount += DOLLAR;
+                                spinWinAmount += Constants.DOLLAR;
                                 break;
                         }
                     }
@@ -158,12 +92,12 @@
 
                 //vertical line match
                 int verticalLineMatches = 0;
-                for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
+                for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
                 {
                     int matches = 0;
                     char verticalMatcher = slotMachineArray[0, j];
 
-                    for (int i = 0; i < NUMBER_OF_ROWS; i++)
+                    for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
                     {
                         if (verticalMatcher == slotMachineArray[i, j])
                         {
@@ -171,7 +105,7 @@
                         }
                     }
 
-                    if (matches == NUMBER_OF_COLUMNS)
+                    if (matches == Constants.NUMBER_OF_COLUMNS)
                     {
                         verticalLineMatches++;
                         Console.WriteLine("Vertical Line Match!");
@@ -179,16 +113,16 @@
                         switch (verticalMatcher)
                         {
                             case '@':
-                                spinWinAmount += AT;
+                                spinWinAmount += Constants.AT;
                                 break;
                             case '%':
-                                spinWinAmount += PERCENT;
+                                spinWinAmount += Constants.PERCENT;
                                 break;
                             case '£':
-                                spinWinAmount += POUND;
+                                spinWinAmount += Constants.POUND;
                                 break;
                             case '$':
-                                spinWinAmount += DOLLAR;
+                                spinWinAmount += Constants.DOLLAR;
                                 break;
                         }
                     }
@@ -198,17 +132,17 @@
                 int forwardDiagonalMatches = 0;
                 char forwardDiagonalMatcher = slotMachineArray[0, 0];
                 int backwardDiagonalMatches = 0;
-                char backwardDiagonalMatcher = slotMachineArray[0, NUMBER_OF_COLUMNS - 1];
-                for (int i = 0; i < NUMBER_OF_ROWS; i++)
+                char backwardDiagonalMatcher = slotMachineArray[0, Constants.NUMBER_OF_COLUMNS - 1];
+                for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
                 {
-                    for (int j = 0; j < NUMBER_OF_COLUMNS; j++)
+                    for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
                     {
                         if (i == j && forwardDiagonalMatcher ==  slotMachineArray[i, j])
                         {
                             forwardDiagonalMatches++;
                         }
 
-                        if ( i == (NUMBER_OF_ROWS - (j + 1)) &&
+                        if ( i == (Constants.NUMBER_OF_ROWS - (j + 1)) &&
                              backwardDiagonalMatcher == slotMachineArray[i, j])
                         {   
                             backwardDiagonalMatches++;
@@ -216,49 +150,49 @@
                     }
                 }
 
-                if (forwardDiagonalMatches == NUMBER_OF_ROWS)
+                if (forwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
                 {
                     Console.WriteLine($"Forward Diagonal Match!");
                     switch (forwardDiagonalMatcher)
                     {
                         case '@':
-                            spinWinAmount += AT;
+                            spinWinAmount += Constants.AT;
                             break;
                         case '%':
-                            spinWinAmount += PERCENT;
+                            spinWinAmount += Constants.PERCENT;
                             break;
                         case '£':
-                            spinWinAmount += POUND;
+                            spinWinAmount += Constants.POUND;
                             break;
                         case '$':
-                            spinWinAmount += DOLLAR;
+                            spinWinAmount += Constants.DOLLAR;
                             break;
                     }
                 }
-                if (backwardDiagonalMatches == NUMBER_OF_ROWS)
+                if (backwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
                 {
                     Console.WriteLine($"Backward Diagonal Match!");
                     switch (backwardDiagonalMatcher)
                     {
                         case '@':
-                            spinWinAmount += AT;
+                            spinWinAmount += Constants.AT;
                             break;
                         case '%':
-                            spinWinAmount += PERCENT;
+                            spinWinAmount += Constants.PERCENT;
                             break;
                         case '£':
-                            spinWinAmount += POUND;
+                            spinWinAmount += Constants.POUND;
                             break;
                         case '$':
-                            spinWinAmount += DOLLAR;
+                            spinWinAmount += Constants.DOLLAR;
                             break;
                     }
                 }
 
-                if (horizontalLineMatches == NUMBER_OF_ROWS || verticalLineMatches == NUMBER_OF_COLUMNS)
+                if (horizontalLineMatches == Constants.NUMBER_OF_ROWS || verticalLineMatches == Constants.NUMBER_OF_COLUMNS)
                 {
                     Console.WriteLine($"$$$ JACKPOT $$$");
-                    spinWinAmount = JACKPOT;
+                    spinWinAmount = Constants.JACKPOT;
                     Console.WriteLine($"You have won ${spinWinAmount}");
                 }
                 else
