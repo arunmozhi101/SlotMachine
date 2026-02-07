@@ -34,16 +34,16 @@
                 //horizontal lines check
                 //string matcher = slotMachineArray[0,0];
                 
-                (spinWinAmount, int horizontalLineMatches, var matchType) = Logic.HorizontalLineMatch(slotMachineArray, spinWinAmount);
-                if (matchType.HasValue)
+                (spinWinAmount, int horizontalLineMatches, var horizontalMatchType) = Logic.HorizontalLineMatch(slotMachineArray, spinWinAmount);
+                if (horizontalMatchType.HasValue)
                 {
-                    UI.PrintHorizontalLineMatchMessage(matchType);
+                    UI.PrintHorizontalLineMatchMessage(horizontalMatchType);
                 }
                 
-                (spinWinAmount, int verticalLineMatches, var matchType) = Logic.VerticalLineMatch(slotMachineArray, spinWinAmount);
-                if (matchType.HasValue)
+                (spinWinAmount, int verticalLineMatches, var verticalMatchType) = Logic.VerticalLineMatch(slotMachineArray, spinWinAmount);
+                if (verticalMatchType.HasValue)
                 {
-                    UI.PrintVerticalLineMatchMessage(matchType);
+                    UI.PrintVerticalLineMatchMessage(verticalMatchType);
                 }
                 
                 /*int diagonalLineMatch = 0;*/
