@@ -100,4 +100,12 @@ public class UI
             Console.WriteLine($"Center Line Match!");
         }
     }
+    
+    public static void PrintVerticalLineMatchMessage(Vertical? matchType)
+    {
+        if (matchType.Value == Vertical.LineMatch)
+        {
+            Console.WriteLine("Vertical Line Match!");
+        }
+    }
 }

@@ -35,37 +35,18 @@
                 //string matcher = slotMachineArray[0,0];
                 
                 (spinWinAmount, int horizontalLineMatches, var matchType) = Logic.HorizontalLineMatch(slotMachineArray, spinWinAmount);
-
                 if (matchType.HasValue)
                 {
                     UI.PrintHorizontalLineMatchMessage(matchType);
                 }
                 
-                /*int diagonalLineMatch = 0;*/
-                
-                //vertical line match
-                int verticalLineMatches = 0;
-                for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
+                (spinWinAmount, int verticalLineMatches, var matchType) = Logic.VerticalLineMatch(slotMachineArray, spinWinAmount);
+                if (matchType.HasValue)
                 {
-                    int matches = 0;
-                    char verticalMatcher = slotMachineArray[0, j];
-
-                    for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
-                    {
-                        if (verticalMatcher == slotMachineArray[i, j])
-                        {
-                            matches++;
-                        }
-                    }
-
-                    if (matches == Constants.NUMBER_OF_COLUMNS)
-                    {
-                        verticalLineMatches++;
-                        Console.WriteLine("Vertical Line Match!");
-                        // Identify the matcher for payout
-                        spinWinAmount = Logic.CalculateSpinWinAmount(verticalMatcher, spinWinAmount);
-                    }
-                } //vertical line match
+                    UI.PrintVerticalLineMatchMessage(matchType);
+                }
+                
+                /*int diagonalLineMatch = 0;*/
 
                 //diagonal lines check
                 int forwardDiagonalMatches = 0;

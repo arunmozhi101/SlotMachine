@@ -85,4 +85,38 @@ public class Logic
         return (spinWinAmount, horizontalLineMatches, null);
 
     }
+
+    public static (int amount, int verticalLineMatches, Vertical? match) VerticalLineMatch(char[,] slotMachineArray, int spinWinAmount)
+    {
+        int verticalLineMatches = 0;
+        for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
+        {
+            int matches = 0;
+            char verticalMatcher = slotMachineArray[0, j];
+
+            for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
+            {
+                if (verticalMatcher == slotMachineArray[i, j])
+                {
+                    matches++;
+                }
+            }
+
+            if (matches == Constants.NUMBER_OF_COLUMNS)
+            {
+                verticalLineMatches++;
+                // Identify the matcher for payout
+                spinWinAmount = Logic.CalculateSpinWinAmount(verticalMatcher, spinWinAmount);
+            }
+        }
+
+        if (verticalLineMatches > 0)
+        {
+            return (spinWinAmount, verticalLineMatches, Vertical.LineMatch);
+        }
+        else
+        {
+            return (spinWinAmount, verticalLineMatches, null);
+        }
+    }
 }
