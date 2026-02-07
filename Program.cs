@@ -15,31 +15,20 @@
             UI.DisplayRules();
 
             //Bet Money
-            int betMoney = UI.GetBetMoney();
+            betMoney = UI.GetBetMoney();
 
             //Print how many spins the user has and build the slot machine array
             //Create symbols list and randomize the array
             //Print player wins.
             int numberOfSpins = betMoney * Constants.COST_PER_SPIN;
-            char[] symbolsList = { '@', '£', '$', '%' };
             char[,] slotMachineArray = new char[Constants.NUMBER_OF_ROWS, Constants.NUMBER_OF_COLUMNS];
 
             for (int spin = 1; spin <= numberOfSpins; spin++)
             {
                 int spinWinAmount = 0;
-                int randomNumber;
-                
-                Console.WriteLine();
-                for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
-                {
-                    for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
-                    {
-                        randomNumber = rng.Next(0, symbolsList.Length);
-                        slotMachineArray[i, j] = symbolsList[randomNumber];
-                        Console.Write($"{slotMachineArray[i, j]}  ");
-                    }
-                    Console.WriteLine();
-                }
+
+                slotMachineArray = Logic.RandomizeSlotMachineArray();
+                UI.DisplaySlotMachineArray(slotMachineArray);
 
                 //How much did the player win?
                 //horizontal lines check
@@ -72,21 +61,7 @@
                         }
 
                         // Identify the matcher for payout
-                        switch (horizontalMatcher)
-                        {
-                            case '@':
-                                spinWinAmount += Constants.AT;
-                                break;
-                            case '%':
-                                spinWinAmount += Constants.PERCENT;
-                                break;
-                            case '£':
-                                spinWinAmount += Constants.POUND;
-                                break;
-                            case '$':
-                                spinWinAmount += Constants.DOLLAR;
-                                break;
-                        }
+                        spinWinAmount = Logic.CalculateSpinWinAmount(horizontalMatcher, spinWinAmount);
                     }
                 } //horizontal line match
 
@@ -110,21 +85,7 @@
                         verticalLineMatches++;
                         Console.WriteLine("Vertical Line Match!");
                         // Identify the matcher for payout
-                        switch (verticalMatcher)
-                        {
-                            case '@':
-                                spinWinAmount += Constants.AT;
-                                break;
-                            case '%':
-                                spinWinAmount += Constants.PERCENT;
-                                break;
-                            case '£':
-                                spinWinAmount += Constants.POUND;
-                                break;
-                            case '$':
-                                spinWinAmount += Constants.DOLLAR;
-                                break;
-                        }
+                        spinWinAmount = Logic.CalculateSpinWinAmount(verticalMatcher, spinWinAmount);
                     }
                 } //vertical line match
 
@@ -153,40 +114,12 @@
                 if (forwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
                 {
                     Console.WriteLine($"Forward Diagonal Match!");
-                    switch (forwardDiagonalMatcher)
-                    {
-                        case '@':
-                            spinWinAmount += Constants.AT;
-                            break;
-                        case '%':
-                            spinWinAmount += Constants.PERCENT;
-                            break;
-                        case '£':
-                            spinWinAmount += Constants.POUND;
-                            break;
-                        case '$':
-                            spinWinAmount += Constants.DOLLAR;
-                            break;
-                    }
+                    spinWinAmount = Logic.CalculateSpinWinAmount(forwardDiagonalMatcher, spinWinAmount);
                 }
                 if (backwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
                 {
                     Console.WriteLine($"Backward Diagonal Match!");
-                    switch (backwardDiagonalMatcher)
-                    {
-                        case '@':
-                            spinWinAmount += Constants.AT;
-                            break;
-                        case '%':
-                            spinWinAmount += Constants.PERCENT;
-                            break;
-                        case '£':
-                            spinWinAmount += Constants.POUND;
-                            break;
-                        case '$':
-                            spinWinAmount += Constants.DOLLAR;
-                            break;
-                    }
+                    spinWinAmount = Logic.CalculateSpinWinAmount(backwardDiagonalMatcher, spinWinAmount);
                 }
 
                 if (horizontalLineMatches == Constants.NUMBER_OF_ROWS || verticalLineMatches == Constants.NUMBER_OF_COLUMNS)

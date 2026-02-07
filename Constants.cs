@@ -11,4 +11,6 @@ public class Constants
     public const int DOLLAR = 10;
     public const int CENTER_LINE = 1;
     public const int COST_PER_SPIN = 1;
+    
+    public static readonly char[] symbolsList = { '@', '£', '$', '%' };
 }

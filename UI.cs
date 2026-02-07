@@ -75,4 +75,17 @@ public class UI
 
         return betMoney;
     }
+
+    public static void DisplaySlotMachineArray(char[,] slotMachineArray)
+    {
+        Console.WriteLine();
+        for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
+        {
+            for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
+            {
+                Console.Write($"{slotMachineArray[i, j]}  ");
+            }
+            Console.WriteLine();
+        }
+    }
 }
