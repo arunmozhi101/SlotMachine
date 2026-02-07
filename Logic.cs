@@ -20,7 +20,7 @@ public class Logic
         return randomCharArray;
     }
 
-    public static int CalculateSpinWinAmount(char matcher, int spinWinAmount)
+    private static int CalculateSpinWinAmount(char matcher, int spinWinAmount)
     {
         switch (matcher)
         {
@@ -41,7 +41,7 @@ public class Logic
         return spinWinAmount;
     }
 
-    public static (int amount, int horizontalLineMatches, Horizontal? match) HorizontalLineMatch(char[,] slotMachineArray, int spinWinAmount)
+    public static (int amount, int horizontalLineMatches, WIN? match) HorizontalLineMatch(char[,] slotMachineArray, int spinWinAmount)
     {
         int horizontalLineMatches = 0;
         bool centerLineMatch = false;
@@ -75,18 +75,18 @@ public class Logic
 
         if (centerLineMatch)
         {
-            return (spinWinAmount, horizontalLineMatches, Horizontal.CenterLineMatch);
+            return (spinWinAmount, horizontalLineMatches, WIN.CenterLineMatch);
         }
         else if (horizontalLineMatches > 0)
         {
-            return (spinWinAmount, horizontalLineMatches, Horizontal.LineMatch);
+            return (spinWinAmount, horizontalLineMatches, WIN.HorizontalLineMatch);
         }
 
         return (spinWinAmount, horizontalLineMatches, null);
 
     }
 
-    public static (int amount, int verticalLineMatches, Vertical? match) VerticalLineMatch(char[,] slotMachineArray, int spinWinAmount)
+    public static (int amount, int verticalLineMatches, WIN? match) VerticalLineMatch(char[,] slotMachineArray, int spinWinAmount)
     {
         int verticalLineMatches = 0;
         for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
@@ -112,11 +112,68 @@ public class Logic
 
         if (verticalLineMatches > 0)
         {
-            return (spinWinAmount, verticalLineMatches, Vertical.LineMatch);
+            return (spinWinAmount, verticalLineMatches, WIN.VerticalLineMatch);
         }
         else
         {
             return (spinWinAmount, verticalLineMatches, null);
+        }
+    }
+
+    public static (int amount, WIN? match) DiagonalLinesMatch(char[,] slotMachineArray, int spinWinAmount)
+    {
+        //diagonal lines check
+        int forwardDiagonalMatches = 0;
+        char forwardDiagonalMatcher = slotMachineArray[0, 0];
+        int backwardDiagonalMatches = 0;
+        char backwardDiagonalMatcher = slotMachineArray[0, Constants.NUMBER_OF_COLUMNS - 1];
+        for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
+        {
+            for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
+            {
+                if (i == j && forwardDiagonalMatcher ==  slotMachineArray[i, j])
+                {
+                    forwardDiagonalMatches++;
+                }
+
+                if ( i == (Constants.NUMBER_OF_ROWS - (j + 1)) && backwardDiagonalMatcher == slotMachineArray[i, j])
+                {   
+                    backwardDiagonalMatches++;
+                }
+            }
+        }
+        
+        if (forwardDiagonalMatcher == Constants.NUMBER_OF_ROWS && backwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
+        {
+            spinWinAmount = Logic.CalculateSpinWinAmount(forwardDiagonalMatcher, spinWinAmount) +
+                            Logic.CalculateSpinWinAmount(backwardDiagonalMatcher, spinWinAmount);
+            return (spinWinAmount,  WIN.BothDiagonalsMatch);
+        }
+        if (forwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
+        {
+            //Console.WriteLine($"Forward Diagonal Match!");
+            spinWinAmount = Logic.CalculateSpinWinAmount(forwardDiagonalMatcher, spinWinAmount);
+            return (spinWinAmount, WIN.ForwardDiagonalMatch);
+        }
+        if (backwardDiagonalMatches == Constants.NUMBER_OF_ROWS)
+        {
+            //Console.WriteLine($"Backward Diagonal Match!");
+            spinWinAmount = Logic.CalculateSpinWinAmount(backwardDiagonalMatcher, spinWinAmount);
+            return (spinWinAmount, WIN.BackwardDiagonalMatch);
+        }
+        return (spinWinAmount, null);
+    }
+
+    public static (int amount, WIN? match) CheckJackpot(int horizontalLineMatches, int verticalLineMatches, int spinWinAmount)
+    {
+        if (horizontalLineMatches == Constants.NUMBER_OF_ROWS || verticalLineMatches == Constants.NUMBER_OF_COLUMNS)
+        {
+            spinWinAmount = Constants.JACKPOT;
+            return (spinWinAmount, WIN.Jackpot);
+        }
+        else
+        {
+            return (spinWinAmount, null);
         }
     }
 }

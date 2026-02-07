@@ -1,12 +1,12 @@
 namespace SlotMachine;
 
-public enum Horizontal
+public enum WIN
 {
-    LineMatch,
-    CenterLineMatch
-}
-
-public enum Vertical
-{
-    LineMatch
+    HorizontalLineMatch,
+    CenterLineMatch,
+    VerticalLineMatch,
+    ForwardDiagonalMatch,
+    BackwardDiagonalMatch,
+    BothDiagonalsMatch,
+    Jackpot
 }

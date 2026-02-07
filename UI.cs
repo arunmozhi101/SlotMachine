@@ -89,23 +89,59 @@ public class UI
         }
     }
 
-    public static void PrintHorizontalLineMatchMessage(Horizontal? matchType)
+    public static void PrintHorizontalLineMatchMessage(WIN? matchType)
     {
-        if (matchType.Value == Horizontal.LineMatch)
+        if (matchType.Value == WIN.HorizontalLineMatch)
         {
             Console.WriteLine("Horizontal Line Match!");
         }
-        else if (matchType.Value == Horizontal.CenterLineMatch)
+        else if (matchType.Value == WIN.CenterLineMatch)
         {
             Console.WriteLine($"Center Line Match!");
         }
     }
     
-    public static void PrintVerticalLineMatchMessage(Vertical? matchType)
+    public static void PrintVerticalLineMatchMessage(WIN? matchType)
     {
-        if (matchType.Value == Vertical.LineMatch)
+        if (matchType.Value == WIN.VerticalLineMatch)
         {
             Console.WriteLine("Vertical Line Match!");
         }
+    }
+    
+    public static void PrintDiagonalLineMatchMessage(WIN? matchType)
+    {
+        if (matchType.Value == WIN.BothDiagonalsMatch)
+        {
+            Console.WriteLine($"Both Forward and Backward Diagonals Match!");
+        }
+        if (matchType.Value == WIN.ForwardDiagonalMatch)
+        {
+            Console.WriteLine($"Forward Diagonal Match!");
+        }
+        if (matchType.Value == WIN.BackwardDiagonalMatch)
+        {
+            Console.WriteLine($"Backward Diagonal Match!");
+        }
+    }
+    
+    public static void PrintJackpotMessage(WIN? matchType, int spinWinAmount)
+    {
+        Console.WriteLine($"$$$ JACKPOT $$$");
+        Console.WriteLine($"You have won ${spinWinAmount}");
+    }
+
+    public static void PrintTotalWinsThisSpinMessage(int spinWinAmount)
+    {
+        Console.WriteLine($"Total wins in this spin = ${spinWinAmount}");
+    }
+    
+    public static void PrintOverallWinsMessage(int totalWinAmount)
+    {
+        Console.WriteLine($"Total wins so far = ${totalWinAmount}");
+
+        Console.WriteLine("Ready for the next spin?");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
     }
 }
