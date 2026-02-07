@@ -88,4 +88,16 @@ public class UI
             Console.WriteLine();
         }
     }
+
+    public static void PrintHorizontalLineMatchMessage(Horizontal? matchType)
+    {
+        if (matchType.Value == Horizontal.LineMatch)
+        {
+            Console.WriteLine("Horizontal Line Match!");
+        }
+        else if (matchType.Value == Horizontal.CenterLineMatch)
+        {
+            Console.WriteLine($"Center Line Match!");
+        }
+    }
 }

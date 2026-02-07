@@ -33,38 +33,16 @@
                 //How much did the player win?
                 //horizontal lines check
                 //string matcher = slotMachineArray[0,0];
-                int horizontalLineMatches = 0;
-                int centerLineMatch = 0;
-                int diagonalLineMatch = 0;
+                
+                (spinWinAmount, int horizontalLineMatches, var matchType) = Logic.HorizontalLineMatch(slotMachineArray, spinWinAmount);
 
-                //horizontal line match
-                for (int i = 0; i < Constants.NUMBER_OF_ROWS; i++)
+                if (matchType.HasValue)
                 {
-                    int matches = 0;
-                    char horizontalMatcher = slotMachineArray[i, 0];
-
-                    for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
-                    {
-                        if (horizontalMatcher == slotMachineArray[i, j])
-                        {
-                            matches++;
-                        }
-                    }
-
-                    if (matches == Constants.NUMBER_OF_ROWS)
-                    {
-                        horizontalLineMatches++;
-                        Console.WriteLine("Horizontal Line Match!");
-                        if (i == Constants.CENTER_LINE)
-                        {
-                            Console.WriteLine($"Center Line Match!");
-                        }
-
-                        // Identify the matcher for payout
-                        spinWinAmount = Logic.CalculateSpinWinAmount(horizontalMatcher, spinWinAmount);
-                    }
-                } //horizontal line match
-
+                    UI.PrintHorizontalLineMatchMessage(matchType);
+                }
+                
+                /*int diagonalLineMatch = 0;*/
+                
                 //vertical line match
                 int verticalLineMatches = 0;
                 for (int j = 0; j < Constants.NUMBER_OF_COLUMNS; j++)
